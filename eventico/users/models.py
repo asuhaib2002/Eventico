@@ -5,16 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 class User(AbstractUser):
-    """
-    Default custom user model for eventico.
-    If adding fields that need to be filled at user signup,
-    check forms.SignupForm and forms.SocialSignupForms accordingly.
-    """
-
-    # First and last name do not cover name patterns around the globe
-    name = CharField(_("Name of User"), blank=True, max_length=255)
-    first_name = None  # type: ignore[assignment]
-    last_name = None  # type: ignore[assignment]
+    mobile_number = CharField(max_length=15, blank=True, null=True)
 
     def get_absolute_url(self) -> str:
         """Get URL for user's detail view.
