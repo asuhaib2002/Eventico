@@ -6,10 +6,10 @@ from rest_framework.routers import SimpleRouter
 from eventico.users.api.views import UserSignupView, UserViewSet, UserLoginView, UserLogoutView
 from eventico.event_manager.api.views import EventViewSet
 
-router = DefaultRouter() if settings.DEBUG else SimpleRouter()
+router = DefaultRouter()
 
 router.register("users", UserViewSet)
-router.register(r'events', EventViewSet)
+router.register(r'events', EventViewSet,basename = 'event')
 
 
 app_name = "api"

@@ -1,7 +1,7 @@
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, BasePermission
 from event_manager.models import Event
-from .serializers import EventSerializer
+from .serializers import EventSerializer, EventCreateSerializer
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
@@ -20,6 +20,19 @@ class EventViewSet(viewsets.ModelViewSet):
         else:
             self.permission_classes = [IsAuthenticated]
         return super().get_permissions()
+
+    def create(self, request, *args, **kwargs):
+        serializer = EventCreateSerializer(data=request.data)
+        if serializer.is_valid():
+            attendees_data = serializer.validated_data.pop('attendees', [])
+            event = Event.objects.create(owner=request.user, **serializer.validated_data)
+            event.attendees.set(attendees_data)
+            event.save()
+            return Response(EventSerializer(event).data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def get_serializer_context(self):
+        return {'request': self.request}
 
     @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
     def attend(self, request, pk=None):
