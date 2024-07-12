@@ -8,4 +8,4 @@ hiredis==2.3.2  # https://github.com/redis/hiredis-py
 
 # Django
 # ------------------------------------------------------------------------------
-django-anymail==11.0  # https://github.com/anymail/django-anymail
+django-anymail==11.0.1  # https://github.com/anymail/django-anymail
