@@ -18,4 +18,24 @@ class Event(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Order(models.Model):
+    options = (
+        ('ONEWAY',1),
+        ('RETURN',2)
+    )
+    destination = models.CharField(max_length=255)
+    destination_iata = models.CharField(max_length=255)
+    origin = models.CharField(max_length=255)
+    origin_iata = models.CharField(max_length=255)
+    type = models.CharField(max_length=255)
+    departure = models.DateField(blank=True, null=True)
+    arrival = models.DateField(blank=True, null=True)
+
+    class Meta:
+        app_label = 'event_manager'
+
+    def __str__(self):
+        return self.origin + ' to ' + self.destination
     
